@@ -1,0 +1,4 @@
+INSERT INTO public.contracts (title,description,contract_number,status,"type",amount,start_date,end_date,created_at,updated_at,created_by,approved_by,approved_at) VALUES
+	 ('采购合同-服务器设备','购买服务器设备的合同','CONTRACT-001','pending'::public."contractstatusenum",'purchase'::public."contracttypeenum",'150000.00',NULL,NULL,'2026-01-01 10:00:00','2026-01-01 10:00:00','admin',NULL,NULL),
+	 ('销售合同-软件许可','软件许可销售合同','CONTRACT-002','approved'::public."contractstatusenum",'sales'::public."contracttypeenum",'250000.00',NULL,NULL,'2026-01-02 14:30:00','2026-01-03 09:15:00','admin','manager','2026-01-03 09:15:00'),
+	 ('服务合同-技术支持','技术支持服务合同','CONTRACT-003','modified'::public."contractstatusenum",'service'::public."contracttypeenum",'80000.00',NULL,NULL,'2026-01-03 11:20:00','2026-01-04 16:45:00','admin',NULL,NULL);

@@ -1,0 +1,132 @@
+-- public.ai_chat_history definition
+
+-- Drop table
+
+-- DROP TABLE public.ai_chat_history;
+
+CREATE TABLE public.ai_chat_history (
+	id serial4 NOT NULL,
+	user_id varchar(50) NOT NULL,
+	contract_id int4 NULL,
+	question text NOT NULL,
+	answer text NOT NULL,
+	conversation_id varchar(100) NOT NULL,
+	created_at timestamp NULL,
+	CONSTRAINT ai_chat_history_pkey PRIMARY KEY (id)
+);
+CREATE INDEX ix_ai_chat_history_contract_id ON public.ai_chat_history USING btree (contract_id);
+CREATE INDEX ix_ai_chat_history_conversation_id ON public.ai_chat_history USING btree (conversation_id);
+CREATE INDEX ix_ai_chat_history_id ON public.ai_chat_history USING btree (id);
+CREATE INDEX ix_ai_chat_history_user_id ON public.ai_chat_history USING btree (user_id);
+
+
+-- public.ai_chat_history foreign keys
+
+ALTER TABLE public.ai_chat_history ADD CONSTRAINT ai_chat_history_contract_id_fkey FOREIGN KEY (contract_id) REFERENCES public.contracts(id);
+
+
+
+-- public.audit_logs definition
+
+-- Drop table
+
+-- DROP TABLE public.audit_logs;
+
+CREATE TABLE public.audit_logs (
+	id serial4 NOT NULL,
+	contract_id int4 NOT NULL,
+	"action" varchar(50) NOT NULL,
+	description text NULL,
+	performed_by varchar(50) NULL,
+	performed_at timestamp NULL,
+	CONSTRAINT audit_logs_pkey PRIMARY KEY (id)
+);
+CREATE INDEX ix_audit_logs_contract_id ON public.audit_logs USING btree (contract_id);
+CREATE INDEX ix_audit_logs_id ON public.audit_logs USING btree (id);
+
+
+-- public.audit_logs foreign keys
+
+ALTER TABLE public.audit_logs ADD CONSTRAINT audit_logs_contract_id_fkey FOREIGN KEY (contract_id) REFERENCES public.contracts(id);
+
+
+
+-- public.compliance_rules definition
+
+-- Drop table
+
+-- DROP TABLE public.compliance_rules;
+
+CREATE TABLE public.compliance_rules (
+	id serial4 NOT NULL,
+	title varchar(255) NOT NULL,
+	description text NULL,
+	rule_type varchar(50) NOT NULL,
+	severity varchar(20) NOT NULL,
+	is_active bool NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	CONSTRAINT compliance_rules_pkey PRIMARY KEY (id)
+);
+CREATE INDEX ix_compliance_rules_id ON public.compliance_rules USING btree (id);
+CREATE INDEX ix_compliance_rules_rule_type ON public.compliance_rules USING btree (rule_type);
+
+
+
+-- public.contract_versions definition
+
+-- Drop table
+
+-- DROP TABLE public.contract_versions;
+
+CREATE TABLE public.contract_versions (
+	id serial4 NOT NULL,
+	contract_id int4 NOT NULL,
+	version_number varchar(20) NOT NULL,
+	"content" text NOT NULL,
+	file_path varchar(255) NULL,
+	file_type varchar(20) NULL,
+	created_at timestamp NULL,
+	created_by varchar(50) NULL,
+	CONSTRAINT contract_versions_pkey PRIMARY KEY (id)
+);
+CREATE INDEX ix_contract_versions_contract_id ON public.contract_versions USING btree (contract_id);
+CREATE INDEX ix_contract_versions_id ON public.contract_versions USING btree (id);
+
+
+-- public.contract_versions foreign keys
+
+ALTER TABLE public.contract_versions ADD CONSTRAINT contract_versions_contract_id_fkey FOREIGN KEY (contract_id) REFERENCES public.contracts(id);
+
+
+
+
+-- public.contracts definition
+
+-- Drop table
+
+-- DROP TABLE public.contracts;
+
+CREATE TABLE public.contracts (
+	id serial4 NOT NULL,
+	title varchar(255) NOT NULL,
+	description text NULL,
+	contract_number varchar(50) NULL,
+	status public."contractstatusenum" NULL,
+	"type" public."contracttypeenum" NOT NULL,
+	amount varchar(50) NULL,
+	start_date date NULL,
+	end_date date NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	created_by varchar(50) NULL,
+	approved_by varchar(50) NULL,
+	approved_at timestamp NULL,
+	CONSTRAINT contracts_pkey PRIMARY KEY (id)
+);
+CREATE UNIQUE INDEX ix_contracts_contract_number ON public.contracts USING btree (contract_number);
+CREATE INDEX ix_contracts_created_at ON public.contracts USING btree (created_at);
+CREATE INDEX ix_contracts_id ON public.contracts USING btree (id);
+CREATE INDEX ix_contracts_status ON public.contracts USING btree (status);
+CREATE INDEX ix_contracts_title ON public.contracts USING btree (title);
+CREATE INDEX ix_contracts_type ON public.contracts USING btree (type);
